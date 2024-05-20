@@ -20,37 +20,28 @@ public class Person
         Estado=estado;
         Vip=vip;
         Id=id;
-      
     }
     
-        [JsonConstructor]
-        public Person() { }
-    
-        public static Person GetRandomPerson()
+    [JsonConstructor]
+    public Person() { }
+
+    public static Person GetRandomPerson()
+    {
+        string filePath = @"C:\Users\alfon\OneDrive\Escritorio\OS\src\personas.json";
+        string jsonStr = File.ReadAllText(filePath);
+        List<Person> personas = JsonSerializer.Deserialize<List<Person>>(jsonStr);        
+        Random random = new Random();
+        int randomIndex = random.Next(personas.Count);
+        Person randomPerson=personas[randomIndex];
+        if (Lista.Contains(randomPerson))
         {
-            string filePath = @"C:\Users\bmora\OneDrive\Escritorio\C#24\OS\src\personas.json";
-            string jsonStr = File.ReadAllText(filePath);
-            List<Person> personas = JsonSerializer.Deserialize<List<Person>>(jsonStr);        
-            Random random = new Random();
-            int randomIndex = random.Next(personas.Count);
-            Person randomPerson=personas[randomIndex];
-            if (Lista.Contains(randomPerson))
-            {
-                randomIndex = random.Next(personas.Count);
-                randomPerson = personas[randomIndex];
-            }
-            else 
-            {
-            Lista.Add(randomPerson);
-            }
-            return randomPerson;
-
-
- 
-
-
+            randomIndex = random.Next(personas.Count);
+            randomPerson = personas[randomIndex];
         }
-
-
-
+        else 
+        {
+            Lista.Add(randomPerson);
+        }
+        return randomPerson;
+    }
 }

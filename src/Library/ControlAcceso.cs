@@ -7,21 +7,26 @@ namespace Library
         public Thread CamaraEntrada { get; set; }
         public Thread CamaraCantina { get; set; }
         public Thread CamaraPasillo { get; set; }
+        public Thread ReconocimientoFacial { get; set; }
+        public Thread VerificacionAcceso { get; set; }
         private bool stop = false;
-        private int contador=0;
+        private int contador = 0;
 
         public ControlAcceso()
         {
             CamaraEntrada = new Thread(() => IniciarReconocimiento("CamaraEntrada"));
             CamaraCantina = new Thread(() => IniciarReconocimiento("CamaraCantina"));
             CamaraPasillo = new Thread(() => IniciarReconocimiento("CamaraPasillo"));
+            ReconocimientoFacial = new Thread(() => IniciarReconocimiento("ReconocimientoFacial"));
+            VerificacionAcceso = new Thread(() => IniciarReconocimiento("VerificacionAcceso"));
         }
 
-         public void IniciarReconocimiento(string camara)
+        public void IniciarReconocimiento(string camara)
         {
             while (!stop)
             {
                 Person persona = Person.GetRandomPerson();
+                IniciarReconocimientoFacial();
                 if (persona.Estado.Equals("Autorizado"))
                 {
                     Console.WriteLine($"{camara}: Persona reconocida: {persona.Nombre} {persona.Apellido}");
@@ -29,6 +34,8 @@ namespace Library
                 else
                 {
                     Console.WriteLine($"{camara}: Persona no reconocida: {persona.Nombre} {persona.Apellido}, por favor vaya a registro de usuarios.");
+                    IniciarVerificacionAcceso();
+                    RegistrarUsuario();
                 }
 
                 if (persona.Tipo.Equals("Discapacitado"))
@@ -55,7 +62,6 @@ namespace Library
                 Thread.Sleep(3000);
             }
         }
-
         public void IniciarSistema()
         {
             CamaraEntrada.Start();
@@ -65,6 +71,24 @@ namespace Library
         public void StopSystem()
         {
             this.stop=true;
+        }
+        public void IniciarReconocimientoFacial()
+        {
+            IniciarVerificacionAcceso();
+            Console.WriteLine("Por Camara, \nIniciando Reconocimiento Facial...");
+            Thread.Sleep(5000);
+            Console.WriteLine("Completado");
+            
+        }
+        public void IniciarVerificacionAcceso()
+        {
+            Console.WriteLine("Iniciando la verificación...");
+            Thread.Sleep(5000);
+        }
+        public void RegistrarUsuario()
+        {
+            Thread.Sleep(4000);
+            Console.WriteLine("Usuario Registrado");
         }
     }
 }
