@@ -1,69 +1,77 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-public class CamaraSeguridad
+namespace Library
 {
-    private readonly int _id;
-    private readonly SortedSet<SolicitudAcceso> _solicitudes;
-    private readonly object _lockObject = new object();
-    private bool _isProcessing = false;
-
-    public CamaraSeguridad(int id)
-    {
-        _id = id;
-        _solicitudes = new SortedSet<SolicitudAcceso>();
-    }
-
-    public void AgregarSolicitud(SolicitudAcceso solicitud)
-    {
-        lock (_lockObject)
+        public class CamaraSeguridad
         {
-            solicitud.TiempoDeLlegada = DateTime.Now;
-            _solicitudes.Add(solicitud);
-        }
-    }
+            private readonly int _id;
+            private readonly PriorityQueue<SolicitudAcceso, int> _solicitudes = new PriorityQueue<SolicitudAcceso, int>();
+            private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
-    public async Task ProcesarSolicitudesAsync()
-    {
-        while (true)
-        {
-            SolicitudAcceso solicitud = null;
-            lock (_lockObject)
+            public int CamaraId => _id;
+
+            public CamaraSeguridad(int id)
             {
-                if (_solicitudes.Any() && !_isProcessing)
-                {
-                    solicitud = _solicitudes.First();
-                    _solicitudes.Remove(solicitud);
-                    _isProcessing = true;
-                }
+                _id = id;
             }
 
-            if (solicitud != null)
+            public void AgregarSolicitud(SolicitudAcceso solicitud)
             {
+                solicitud.TiempoDeLlegada = DateTime.Now;
+                _semaphore.Wait();
                 try
                 {
-                    Console.WriteLine($"Cámara {_id} procesando solicitud de {solicitud.Nombre} con prioridad {solicitud.Prioridad} y descripción {solicitud.Descripcion}");
-                    solicitud.TiempoDeRetorno = solicitud.TiempoDeEspera + TimeSpan.FromMilliseconds(solicitud.TiempoDeAnalisis);
-                    await Task.Delay(solicitud.TiempoDeAnalisis);
-                    Console.WriteLine($"Cámara {_id} completó solicitud de {solicitud.Nombre}. Tiempo de espera: {solicitud.TiempoDeEspera.TotalMilliseconds} ms. Tiempo de retorno: {solicitud.TiempoDeRetorno.TotalMilliseconds} ms.");
+                    _solicitudes.Enqueue(solicitud, solicitud.Prioridad);
                 }
                 finally
                 {
-                    lock (_lockObject)
+                    _semaphore.Release();
+                }
+            }
+
+            public async Task ProcesarSolicitudesAsync(HashSet<Person> personasAutorizadas, Dictionary<string, int> tratosEspeciales, Dictionary<string, TimeSpan> metricas)
+            {
+                while (_solicitudes.Count > 0)
+                {
+                    SolicitudAcceso solicitud = null;
+
+                    await _semaphore.WaitAsync();
+                    try
                     {
-                        _isProcessing = false;
+                        if (_solicitudes.TryDequeue(out solicitud, out _))
+                        {
+                            var autorizado = personasAutorizadas.Contains(solicitud.Persona);
+                            var mensajeAutorizacion = autorizado ? "autorizada" : "denegada";
+
+                            Console.WriteLine($"Cámara {_id} procesando solicitud de {solicitud.Persona.Nombre} en puerta {solicitud.Puerta} con prioridad {solicitud.Prioridad}. Acceso {mensajeAutorizacion}.");
+
+                            // Aplicar tratos especiales si hay
+                            if (tratosEspeciales.ContainsKey(solicitud.Persona.Tipo))
+                            {
+                                solicitud.TiempoDeAnalisis -= tratosEspeciales[solicitud.Persona.Tipo];
+                            }
+
+                            solicitud.TiempoDeRetorno = solicitud.TiempoDeEspera + TimeSpan.FromMilliseconds(solicitud.TiempoDeAnalisis);
+                            await Task.Delay(solicitud.TiempoDeAnalisis);
+
+                            Console.WriteLine($"Cámara {_id} completó solicitud de {solicitud.Persona.Nombre}. Tiempo de espera: {solicitud.TiempoDeEspera.TotalMilliseconds} ms. Tiempo de retorno: {solicitud.TiempoDeRetorno.TotalMilliseconds} ms. Acceso {mensajeAutorizacion}.");
+
+                            // Registrar métricas
+                            if (!metricas.ContainsKey(solicitud.Persona.Tipo))
+                            {
+                                metricas[solicitud.Persona.Tipo] = TimeSpan.Zero;
+                            }
+                            metricas[solicitud.Persona.Tipo] += solicitud.TiempoDeRetorno;
+                        }
+                    }
+                    finally
+                    {
+                        _semaphore.Release();
+                    }
+
+                    if (solicitud == null)
+                    {
+                        await Task.Delay(500); // Esperar un poco antes de volver a verificar si hay nuevas solicitudes
                     }
                 }
             }
-            else
-            {
-                // No hay más solicitudes para procesar, salir del bucle
-                break;
-            }
         }
-
-        Console.WriteLine($"Cámara {_id} ha terminado de procesar todas las solicitudes.");
-    }
 }
