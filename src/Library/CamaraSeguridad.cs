@@ -41,7 +41,15 @@ namespace Library
                         var autorizado = personasAutorizadas.Contains(solicitud.Persona);
                         var mensajeAutorizacion = autorizado ? "autorizada" : "denegada";
 
-                        Console.WriteLine($"Cámara {_id} procesando solicitud de {solicitud.Persona.Nombre} en puerta {solicitud.Puerta} con prioridad {solicitud.Prioridad}. Acceso {mensajeAutorizacion}.");
+                        if (mensajeAutorizacion == "autorizada")
+                        {
+                            Console.WriteLine($"Cámara {_id} procesando solicitud en puerta {solicitud.Puerta} con prioridad {solicitud.Prioridad}. Acceso {mensajeAutorizacion}. Persona identificada : {solicitud.Persona.Nombre}"); // Mensaje de autorizacion     
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Cámara {_id} procesando solicitud en puerta {solicitud.Puerta} con prioridad {solicitud.Prioridad}. Acceso {mensajeAutorizacion}. Dirijase con el personal para su autorizacion de ingreso"); // Mensaje de autorizacion     
+                        }
+                        
 
                         // Aplicar tratos especiales si hay
                         if (tratosEspeciales.ContainsKey(solicitud.Persona.Tipo))           // Si la persona tiene un trato especial, se le resta el tiempo asignado
