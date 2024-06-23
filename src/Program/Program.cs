@@ -15,24 +15,70 @@ namespace Program
             Person franyer = new Person("Franyer", "Malave", "Profesor", true, 67890123);
             Person carlos = new Person("Carlos", "Tevez", "Funcionario", true, 78901234);
             Person wanchope = new Person("Wanchope", "Avila", "Funcionario", false, 89012345);
-
+            Person sergio = new Person("Sergio", "Rochet", "Alumno", true, 30123456);
+            Person facundo = new Person("Facundo", "Pellistri", "Alumno", false, 41234567);
+            Person nicolas = new Person("Nicolás", "Lopez", "Alumno", true, 52345678);
+            Person gustavo = new Person("Gustavo", "Viera", "Alumno", false, 63456789);
+            Person jonathan = new Person("Jonathan", "Urretaviscaya", "Alumno", true, 74567890);
+            Person jorge = new Person("Jorge", "Fucile", "Profesor", true, 85678901);
+            Person oliveros = new Person("Agustín", "Oliveros", "Profesor", false, 96789012);
+            Person sebastian = new Person("Sebastián", "Sosa", "Profesor", true, 10890123);
+            Person christian = new Person("Christian", "Rodriguez", "Funcionario", true, 11901234);
+            Person martin = new Person("Martín", "Cáceres", "Funcionario", false, 13012345);
+            Person maximiliano = new Person("Maximiliano", "Falcón", "Alumno", true, 14123456);
+            Person torres = new Person("Facundo", "Torres", "Alumno", false, 15234567);
+            Person pablo = new Person("Pablo", "Garcia", "Alumno", true, 16345678);
+            Person diego = new Person("Diego", "Polenta", "Alumno", false, 17456789);
+            Person emiliano = new Person("Emiliano", "Martínez", "Alumno", true, 18567890);
+            Person leandro = new Person("Leandro", "Fernández", "Profesor", true, 19678901);
+            Person damian = new Person("Damián", "Macaluso", "Profesor", false, 20789012);
+            Person ignacio = new Person("Ignacio", "Lores", "Profesor", true, 21890123);
+            Person rodrigo = new Person("Rodrigo", "Pérez", "Funcionario", true, 22901234);
+            Person federico = new Person("Federico", "Rodriguez", "Funcionario", false, 24012345);
+            
             // Defino una lista de personas autorizadas para entrar a la universidad.
-            var personasAutorizadas = new HashSet<Person> { brian, alfonso, julio, ingrid, franyer, carlos};
-
+            var personasAutorizadas = new HashSet<Person> { brian, alfonso, julio, ingrid, franyer, carlos, wanchope, sergio, facundo, nicolas, gustavo, jonathan, jorge, oliveros, sebastian, christian, martin, maximiliano, torres, pablo, diego, emiliano, leandro, damian, ignacio, rodrigo, federico};
+            Random rand = new Random();         // Creo un objeto de tipo Random para generar numeros aleatorios.   
+           
             /*
             Creo la lista de solicitudes para entrar a la universidad con sus caracteristicas (la persona, la prioridad de la solicitud definida de 
             forma arbitraria para la simulacion, el tiempo de analisis, la camara por la cual se estaria captando y la puerta por la que entra la persona).
             */
+
             var solicitudes = new List<SolicitudAcceso>
             {
-                new SolicitudAcceso { Prioridad = 7, Persona = brian, TiempoDeAnalisis = 1000, CamaraId = 1, Puerta = "A" },
-                new SolicitudAcceso { Prioridad = 7, Persona = alfonso, TiempoDeAnalisis = 1500, CamaraId = 2, Puerta = "B" },
-                new SolicitudAcceso { Prioridad = 1, Persona = agustin, TiempoDeAnalisis = 500, CamaraId = 3, Puerta = "C" },
-                new SolicitudAcceso { Prioridad = 3, Persona = franyer, TiempoDeAnalisis = 1000, CamaraId = 1, Puerta = "D" },
-                new SolicitudAcceso { Prioridad = 7, Persona = ingrid, TiempoDeAnalisis = 1500, CamaraId = 2, Puerta = "E" },
-                new SolicitudAcceso { Prioridad = 1, Persona = julio, TiempoDeAnalisis = 500, CamaraId = 3, Puerta = "A" },
-                new SolicitudAcceso { Prioridad = 3, Persona = wanchope, TiempoDeAnalisis = 1500, CamaraId = 3, Puerta = "A" },
-                new SolicitudAcceso { Prioridad = 2, Persona = carlos, TiempoDeAnalisis = 1000, CamaraId = 3, Puerta = "A" }
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = alfonso, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = agustin, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = franyer, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = ingrid, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = julio, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = wanchope, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = carlos, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = sergio, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = facundo, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = nicolas, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = gustavo, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = jonathan, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = jorge, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = agustin, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = sebastian, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = christian, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = martin, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = maximiliano, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = torres, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = pablo, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = diego, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = emiliano, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = leandro, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = damian, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = ignacio, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = rodrigo, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = federico, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = brian, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = franyer, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = rodrigo, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = federico, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() },
+                new SolicitudAcceso { Prioridad = rand.Next(1, 8), Persona = wanchope, TiempoDeAnalisis = rand.Next(200, 1601), CamaraId = rand.Next(1, 4), Puerta = ((char)rand.Next('A', 'D')).ToString() }
             };
 
             var camaras = new List<CamaraSeguridad>
@@ -85,7 +131,6 @@ namespace Program
             recursos compartidos. Previamente sin usar semaforos los tiempos de retorno eran mucho mayores debido a que se deberia esperar a que
             terminen de administrar los procesos las demas camaras; mediante la implementacion de tareas asincronas podemos correr cada camara
             en un subproceso, cada una con colas de prioridad
-
             */
         }
     }
